@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
 st.set_page_config(
     page_title="配筋シミュレーション",
@@ -29,7 +30,23 @@ st.markdown("""
 
 st.markdown("""
 <svg width="500" height="500">
-    <rect x="200" y="300" width="400" height="400"
+    <rect x="50" y="50" width="300" height="300"
           fill="black" />
 </svg>
 """, unsafe_allow_html=True)
+
+components.html("""
+<svg
+    width="100%"
+    viewBox="0 0 1000 1000"
+    preserveAspectRatio="xMidYMid meet">
+
+    <rect x="100" y="100"
+          width="800"
+          height="800"
+          fill="none"
+          stroke="black"
+          stroke-width="8"/>
+
+</svg>
+""", height=600)
