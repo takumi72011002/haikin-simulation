@@ -44,7 +44,7 @@ components.html("""
     <rect x="100" y="100"
           width="800"
           height="800"
-          fill=""lightgray
+          fill="lightgray"
           stroke="black"
           stroke-width="8"/>
 
