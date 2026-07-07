@@ -44,12 +44,12 @@ components.html("""
     <rect x="100" y="100"
           width="800"
           height="800"
-          fill="none"
+          fill=""lightgray
           stroke="black"
           stroke-width="8"/>
 
 </svg>
-""", height=600)
+""", height=1000)
 
 
 
