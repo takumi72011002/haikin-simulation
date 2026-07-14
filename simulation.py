@@ -163,10 +163,6 @@ column_table = pd.DataFrame([
     ["柱筋の座標"] + column_bars
 ])
 
-# 列名を空にする
-column_table.columns = [f"c{i}" for i in range(len(column_table.columns))]
-beam_table.columns = [f"c{i}" for i in range(len(beam_table.columns))]
-
-st.dataframe(column_table, hide_index=True, use_container_width=True)
+st.table(column_table)
 st.write("")
-st.dataframe(beam_table, hide_index=True, use_container_width=True)
+st.table(beam_table)
