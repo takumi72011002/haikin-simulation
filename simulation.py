@@ -148,3 +148,30 @@ components.html(
     height=900,
     scrolling=False,
 )
+
+import pandas as pd
+
+st.markdown("### 配筋データ")
+
+# 柱筋
+column_table = pd.DataFrame(
+    [
+        ["柱筋", 1, 2, 3, 4, 5, 6, 7, 8],
+        ["柱筋の座標", *column_bars]
+    ],
+    columns=["", "", "", "", "", "", "", "", ""]
+)
+
+st.table(column_table)
+
+# 梁筋
+beam_table = pd.DataFrame(
+    [
+        ["梁筋", 1, 2, 3, 4, 5, 6, 7],
+        ["梁筋の座標 ", *beam_bars]
+    ],
+    columns=["", "", "", "", "", "", "", "", ""]
+)
+
+st.table(beam_table)
+
