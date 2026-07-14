@@ -52,6 +52,96 @@ components.html("""
 """, height=1000)
 
 
+import streamlit as st
+import streamlit.components.v1 as components
+
+st.set_page_config(page_title="配筋図")
+
+svg = """
+<svg width="100%" viewBox="0 0 800 900">
+
+    <!-- 背景 -->
+    <rect x="0" y="0" width="800" height="900" fill="white"/>
+
+    <!-- 柱 -->
+    <rect
+        x="100"
+        y="0"
+        width="600"
+        height="900"
+        fill="#e8e8e8"
+        stroke="black"
+        stroke-width="2"/>
+
+    <!-- 左張り出し -->
+    <rect
+        x="0"
+        y="100"
+        width="100"
+        height="700"
+        fill="#e8e8e8"
+        stroke="black"/>
+
+    <!-- 右張り出し -->
+    <rect
+        x="700"
+        y="100"
+        width="100"
+        height="700"
+        fill="#e8e8e8"
+        stroke="black"/>
+
+    <!-- ===== 縦筋 ===== -->
+
+    <line x1="150" y1="0" x2="150" y2="900"
+          stroke="#333" stroke-width="12"/>
+
+    <line x1="260" y1="0" x2="260" y2="900"
+          stroke="#333" stroke-width="12"/>
+
+    <line x1="340" y1="0" x2="340" y2="900"
+          stroke="#333" stroke-width="12"/>
+
+    <line x1="400" y1="0" x2="400" y2="900"
+          stroke="#333" stroke-width="12"/>
+
+    <line x1="460" y1="0" x2="460" y2="900"
+          stroke="#333" stroke-width="12"/>
+
+    <line x1="540" y1="0" x2="540" y2="900"
+          stroke="#333" stroke-width="12"/>
+
+    <line x1="650" y1="0" x2="650" y2="900"
+          stroke="#333" stroke-width="12"/>
+
+    <!-- ===== 上の梁筋 ===== -->
+
+    <circle cx="70" cy="160" r="18" fill="#666"/>
+    <circle cx="210" cy="160" r="18" fill="#666"/>
+    <circle cx="290" cy="160" r="18" fill="#666"/>
+    <circle cx="370" cy="160" r="18" fill="#666"/>
+    <circle cx="470" cy="160" r="18" fill="#666"/>
+    <circle cx="550" cy="160" r="18" fill="#666"/>
+    <circle cx="650" cy="160" r="18" fill="#666"/>
+    <circle cx="760" cy="160" r="18" fill="#666"/>
+
+    <!-- ===== 下の梁筋 ===== -->
+
+    <circle cx="70" cy="740" r="18" fill="#666"/>
+    <circle cx="210" cy="740" r="18" fill="#666"/>
+    <circle cx="290" cy="740" r="18" fill="#666"/>
+    <circle cx="370" cy="740" r="18" fill="#666"/>
+    <circle cx="470" cy="740" r="18" fill="#666"/>
+    <circle cx="550" cy="740" r="18" fill="#666"/>
+    <circle cx="650" cy="740" r="18" fill="#666"/>
+    <circle cx="760" cy="740" r="18" fill="#666"/>
+
+</svg>
+"""
+
+components.html(svg, height=900)
+
+
 
 
 
