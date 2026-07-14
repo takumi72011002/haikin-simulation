@@ -51,11 +51,7 @@ components.html("""
 </svg>
 """, height=1000)
 
-
-import streamlit as st
 import streamlit.components.v1 as components
-
-st.set_page_config(page_title="配筋シミュレーション")
 
 # ==========================================
 # 配筋データ
@@ -67,8 +63,12 @@ beam_bars = [180, 300, 390, 450, 510, 600, 720]
 # 柱筋（丸）のX座標
 column_bars = [90, 240, 320, 390, 480, 560, 660, 770]
 
-svg = f"""
-<svg width="100%" viewBox="0 0 850 900">
+svg = """
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 850 900"
+    preserveAspectRatio="xMidYMid meet"
+    style="width:100%; height:auto;">
 
     <!-- 柱 -->
     <path
@@ -107,7 +107,7 @@ for x in beam_bars:
     """
 
 # ==========================================
-# 柱筋（上・下）
+# 柱筋（丸）
 # ==========================================
 
 for x in column_bars:
@@ -131,4 +131,8 @@ for x in column_bars:
 
 svg += "</svg>"
 
-components.html(svg, height=900)
+components.html(
+    svg,
+    height=900,
+    scrolling=False,
+)
