@@ -153,15 +153,21 @@ components.html(
 beam_no = list(range(1, len(beam_bars)+1))
 column_no = list(range(1, len(column_bars)+1))
 
-beam_table = pd.DataFrame([
-    ["梁筋"] + beam_no + [""] * (8-len(beam_no)),
-    ["梁筋の座標"] + beam_bars + [""] * (8-len(beam_bars))
-])
+beam_table = pd.DataFrame(
+    [
+        ["梁筋"] + beam_no + [""] * (8-len(beam_no)),
+        ["梁筋の座標"] + beam_bars + [""] * (8-len(beam_bars))
+    ],
+    columns=[""] * 9      
+)
 
-column_table = pd.DataFrame([
-    ["柱筋"] + column_no,
-    ["柱筋の座標"] + column_bars
-])
+column_table = pd.DataFrame(
+    [
+        ["柱筋"] + column_no,
+        ["柱筋の座標"] + column_bars
+    ],
+    columns=[""] * 9      
+)
 
 st.table(column_table)
 st.write("")
