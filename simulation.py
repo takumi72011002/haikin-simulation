@@ -55,94 +55,97 @@ components.html("""
 import streamlit as st
 import streamlit.components.v1 as components
 
-st.set_page_config(page_title="配筋図")
+st.set_page_config(page_title="配筋シミュレーション")
 
-svg = """
-<svg width="100%" viewBox="0 0 800 900">
+# =====================================
+# 寸法
+# =====================================
+COLUMN_W = 400     # 柱幅
+COLUMN_H = 900
 
-    <!-- 背景 -->
-    <rect x="0" y="0" width="800" height="900" fill="white"/>
+BEAM_W = 180       # 梁の出幅
+BEAM_H = 700
 
-    <!-- 柱 -->
-    <rect
-        x="100"
-        y="0"
-        width="600"
-        height="900"
-        fill="#e8e8e8"
-        stroke="black"
-        stroke-width="2"/>
+# 梁筋（縦棒）
+beam_bars = [260, 340, 410, 450, 490, 560, 640]
 
-    <!-- 左張り出し -->
-    <rect
-        x="0"
-        y="100"
-        width="100"
-        height="700"
-        fill="#e8e8e8"
-        stroke="black"/>
+# 柱筋（丸）
+column_bars = [60, 200, 280, 360, 540, 620, 700, 840]
 
-    <!-- 右張り出し -->
-    <rect
-        x="700"
-        y="100"
-        width="100"
-        height="700"
-        fill="#e8e8e8"
-        stroke="black"/>
+svg = f"""
+<svg width="100%" viewBox="0 0 900 900">
 
-    <!-- ===== 縦筋 ===== -->
+<!-- =========================
+     左梁
+========================= -->
+<rect
+    x="0"
+    y="100"
+    width="{BEAM_W}"
+    height="{BEAM_H}"
+    fill="#efefef"
+    stroke="black"
+    stroke-width="2"/>
 
-    <line x1="150" y1="0" x2="150" y2="900"
-          stroke="#333" stroke-width="12"/>
+<!-- =========================
+     柱
+========================= -->
+<rect
+    x="250"
+    y="0"
+    width="{COLUMN_W}"
+    height="{COLUMN_H}"
+    fill="#efefef"
+    stroke="black"
+    stroke-width="2"/>
 
-    <line x1="260" y1="0" x2="260" y2="900"
-          stroke="#333" stroke-width="12"/>
-
-    <line x1="340" y1="0" x2="340" y2="900"
-          stroke="#333" stroke-width="12"/>
-
-    <line x1="400" y1="0" x2="400" y2="900"
-          stroke="#333" stroke-width="12"/>
-
-    <line x1="460" y1="0" x2="460" y2="900"
-          stroke="#333" stroke-width="12"/>
-
-    <line x1="540" y1="0" x2="540" y2="900"
-          stroke="#333" stroke-width="12"/>
-
-    <line x1="650" y1="0" x2="650" y2="900"
-          stroke="#333" stroke-width="12"/>
-
-    <!-- ===== 上の梁筋 ===== -->
-
-    <circle cx="70" cy="160" r="18" fill="#666"/>
-    <circle cx="210" cy="160" r="18" fill="#666"/>
-    <circle cx="290" cy="160" r="18" fill="#666"/>
-    <circle cx="370" cy="160" r="18" fill="#666"/>
-    <circle cx="470" cy="160" r="18" fill="#666"/>
-    <circle cx="550" cy="160" r="18" fill="#666"/>
-    <circle cx="650" cy="160" r="18" fill="#666"/>
-    <circle cx="760" cy="160" r="18" fill="#666"/>
-
-    <!-- ===== 下の梁筋 ===== -->
-
-    <circle cx="70" cy="740" r="18" fill="#666"/>
-    <circle cx="210" cy="740" r="18" fill="#666"/>
-    <circle cx="290" cy="740" r="18" fill="#666"/>
-    <circle cx="370" cy="740" r="18" fill="#666"/>
-    <circle cx="470" cy="740" r="18" fill="#666"/>
-    <circle cx="550" cy="740" r="18" fill="#666"/>
-    <circle cx="650" cy="740" r="18" fill="#666"/>
-    <circle cx="760" cy="740" r="18" fill="#666"/>
-
-</svg>
+<!-- =========================
+     右梁
+========================= -->
+<rect
+    x="720"
+    y="100"
+    width="{BEAM_W}"
+    height="{BEAM_H}"
+    fill="#efefef"
+    stroke="black"
+    stroke-width="2"/>
 """
 
+# =============================
+# 梁筋（縦棒）
+# =============================
+for x in beam_bars:
+    svg += f"""
+    <line
+        x1="{x}"
+        y1="0"
+        x2="{x}"
+        y2="900"
+        stroke="#222"
+        stroke-width="12"/>
+    """
+
+# =============================
+# 柱筋（丸）
+# =============================
+for x in column_bars:
+    svg += f"""
+    <circle
+        cx="{x}"
+        cy="160"
+        r="18"
+        fill="#666"
+        stroke="black"/>
+
+    <circle
+        cx="{x}"
+        cy="740"
+        r="18"
+        fill="#666"
+        stroke="black"/>
+    """
+
+svg += "</svg>"
+
 components.html(svg, height=900)
-
-
-
-
-
-
