@@ -163,6 +163,9 @@ column_table = pd.DataFrame([
     ["柱筋の座標"] + column_bars
 ])
 
+beam_table.columns = [""] * len(beam_table.columns)
+column_table.columns = [""] * len(column_table.columns)
+
 st.table(column_table)
 st.write("")
 st.table(beam_table)
