@@ -164,10 +164,9 @@ column_table = pd.DataFrame([
 ])
 
 # 列名を空にする
-column_table.columns = [""] * len(column_table.columns)
-beam_table.columns = [""] * len(beam_table.columns)
+column_table.columns = [f"c{i}" for i in range(len(column_table.columns))]
+beam_table.columns = [f"c{i}" for i in range(len(beam_table.columns))]
 
-# 表示
 st.dataframe(column_table, hide_index=True, use_container_width=True)
 st.write("")
 st.dataframe(beam_table, hide_index=True, use_container_width=True)
