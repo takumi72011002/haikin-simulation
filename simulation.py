@@ -290,6 +290,6 @@ components.html(
         {svg}
     </div>
     """,
-    height=1300,
+    height=1500,
     scrolling=False,
 )
