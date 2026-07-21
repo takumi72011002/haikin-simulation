@@ -91,7 +91,7 @@ for x in column_bars:
     y1="-40"
     x2="{x}"
     y2="0"
-    stroke="gray"
+    stroke="black"
     stroke-width="1"/>
     """
 
@@ -120,6 +120,17 @@ font-size="16">
 {last}
 </text>
 """
+
+svg += f"""
+    <line
+    x1="{CL}"
+    y1="-40"
+    x2="{CR}"
+    y2="-40"
+    stroke="black"
+    stroke-width="1"/>
+    """
+
 
 
 
