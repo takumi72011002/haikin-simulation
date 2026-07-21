@@ -53,9 +53,9 @@ stroke-width="2"
 
 
 <line
-x1="{CL}"
+x1="{CL+1}"
 y1="-80"
-x2="{CL}"
+x2="{CL+1}"
 y2="0"
 stroke="black"
 stroke-width="2"/>
