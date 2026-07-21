@@ -1,6 +1,5 @@
 import streamlit as st
 import streamlit.components.v1 as components
-import pandas as pd
 
 st.set_page_config(
     page_title="配筋シミュレーション",
@@ -9,106 +8,160 @@ st.set_page_config(
 
 st.title("配筋シミュレーション")
 
-st.write("こんにちは！")
-
-name = st.text_input("名前")
-
-if name:
-    st.success(f"こんにちは、{name}さん！")
-
-st.markdown("""
-<svg width="60" height="60">
-    <rect x="10" y="10" width="40" height="40"
-          fill="black" />
-</svg>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<svg width="100" height="100">
-    <circle cx="50" cy="50" r="30" fill="red"/>
-</svg>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<svg width="500" height="500">
-    <rect x="50" y="50" width="300" height="300"
-          fill="black" />
-</svg>
-""", unsafe_allow_html=True)
-
-components.html("""
-<svg
-    width="100%"
-    viewBox="0 0 1000 1000"
-    preserveAspectRatio="xMidYMid meet">
-
-    <rect x="100" y="100"
-          width="800"
-          height="800"
-          fill="lightgray"
-          stroke="black"
-          stroke-width="8"/>
-
-</svg>
-""", height=1000)
-
-import streamlit.components.v1 as components
-
 # ==========================================
 # 配筋データ
 # ==========================================
 
-# 梁筋（縦棒）のX座標
 beam_bars = [180, 300, 390, 450, 510, 600, 720]
-
-# 柱筋（丸）のX座標
 column_bars = [90, 240, 320, 390, 480, 560, 660, 770]
 
-svg = """
+COLUMN_LEFT = 100
+COLUMN_RIGHT = 750
+
+svg = f"""
 <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 850 900"
-    preserveAspectRatio="xMidYMid meet"
-    style="width:100%; height:auto;">
+xmlns="http://www.w3.org/2000/svg"
+viewBox="-80 -120 1010 1160"
+preserveAspectRatio="xMidYMid meet"
+style="width:100%;height:auto;">
 
-    <!-- 柱 -->
-    <path
-        d="
-        M100 0
-        L750 0
-        L750 100
-        L850 100
-        L850 800
-        L750 800
-        L750 900
-        L100 900
-        L100 800
-        L0 800
-        L0 100
-        L100 100
-        Z"
-        fill="#ececec"
-        stroke="black"
-        stroke-width="2"/>
+<defs>
+<marker id="arrow"
+markerWidth="8"
+markerHeight="8"
+refX="4"
+refY="4"
+orient="auto">
+<path d="M0,0 L8,4 L0,8 Z" fill="black"/>
+</marker>
+</defs>
+"""
 
-<!-- 上の線を消す -->
-<line x1="100" y1="0" x2="750" y2="0"
-      stroke="#ececec" stroke-width="3"/>
+# ==================================================
+# 上　柱幅
+# ==================================================
 
-<!-- 下の線を消す -->
-<line x1="100" y1="900" x2="750" y2="900"
-      stroke="#ececec" stroke-width="3"/>
+svg += f"""
+<line
+x1="{COLUMN_LEFT}"
+y1="-80"
+x2="{COLUMN_RIGHT}"
+y2="-80"
+stroke="black"
+stroke-width="2"
+marker-start="url(#arrow)"
+marker-end="url(#arrow)"/>
 
+<line
+x1="{COLUMN_LEFT}"
+y1="-80"
+x2="{COLUMN_LEFT}"
+y2="0"
+stroke="black"
+stroke-width="2"/>
+
+<line
+x1="{COLUMN_RIGHT}"
+y1="-80"
+x2="{COLUMN_RIGHT}"
+y2="0"
+stroke="black"
+stroke-width="2"/>
+
+<text
+x="{(COLUMN_LEFT+COLUMN_RIGHT)/2}"
+y="-92"
+text-anchor="middle"
+font-size="22">
+柱幅
+</text>
+"""
+
+# ==================================================
+# 上　柱筋寸法チェーン
+# ==================================================
+
+previous = 0
+
+for x in column_bars:
+
+    svg += f"""
+    <line
+    x1="{x}"
+    y1="-40"
+    x2="{x}"
+    y2="0"
+    stroke="gray"
+    stroke-width="1"/>
+    """
+
+    center = (previous + x) / 2
+
+    svg += f"""
+    <text
+    x="{center}"
+    y="-48"
+    text-anchor="middle"
+    font-size="16">
+    {x-previous}
+    </text>
+    """
+
+    previous = x
+
+last = COLUMN_RIGHT - column_bars[-1]
+
+svg += f"""
+<text
+x="{(COLUMN_RIGHT+column_bars[-1])/2}"
+y="-48"
+text-anchor="middle"
+font-size="16">
+{last}
+</text>
 """
 
 
+# ==================================================
+# 柱
+# ==================================================
 
+svg += """
+<path
+d="
+M100 0
+L750 0
+L750 100
+L850 100
+L850 800
+L750 800
+L750 900
+L100 900
+L100 800
+L0 800
+L0 100
+L100 100
+Z"
+fill="#ececec"
+stroke="black"
+stroke-width="2"/>
 
-# ==========================================
-# 梁筋（縦棒）
-# ==========================================
+<!-- 上下の線を消す -->
+<line x1="100" y1="0" x2="750" y2="0"
+      stroke="#ececec"
+      stroke-width="3"/>
+
+<line x1="100" y1="900" x2="750" y2="900"
+      stroke="#ececec"
+      stroke-width="3"/>
+"""
+
+# ==================================================
+# 梁筋
+# ==================================================
 
 for x in beam_bars:
+
     svg += f"""
     <line
         x1="{x}"
@@ -119,11 +172,12 @@ for x in beam_bars:
         stroke-width="12"/>
     """
 
-# ==========================================
-# 柱筋（丸）
-# ==========================================
+# ==================================================
+# 柱筋
+# ==================================================
 
 for x in column_bars:
+
     svg += f"""
     <circle
         cx="{x}"
@@ -142,30 +196,95 @@ for x in column_bars:
         stroke-width="1"/>
     """
 
+# ==================================================
+# 下　梁筋寸法チェーン
+# ==================================================
+
+previous = 0
+
+for x in beam_bars:
+
+    svg += f"""
+    <line
+        x1="{x}"
+        y1="900"
+        x2="{x}"
+        y2="940"
+        stroke="gray"
+        stroke-width="1"/>
+    """
+
+    center = (previous + x) / 2
+
+    svg += f"""
+    <text
+        x="{center}"
+        y="960"
+        text-anchor="middle"
+        font-size="16">
+        {x-previous}
+    </text>
+    """
+
+    previous = x
+
+last = COLUMN_RIGHT - beam_bars[-1]
+
+svg += f"""
+<text
+x="{(COLUMN_RIGHT+beam_bars[-1])/2}"
+y="960"
+text-anchor="middle"
+font-size="16">
+{last}
+</text>
+"""
+
+
+# ==================================================
+# 下　梁幅
+# ==================================================
+
+svg += f"""
+<line
+x1="{COLUMN_LEFT}"
+y1="1020"
+x2="{COLUMN_RIGHT}"
+y2="1020"
+stroke="black"
+stroke-width="2"
+marker-start="url(#arrow)"
+marker-end="url(#arrow)"/>
+
+<line
+x1="{COLUMN_LEFT}"
+y1="900"
+x2="{COLUMN_LEFT}"
+y2="1020"
+stroke="black"
+stroke-width="2"/>
+
+<line
+x1="{COLUMN_RIGHT}"
+y1="900"
+x2="{COLUMN_RIGHT}"
+y2="1020"
+stroke="black"
+stroke-width="2"/>
+
+<text
+x="{(COLUMN_LEFT+COLUMN_RIGHT)/2}"
+y="1045"
+text-anchor="middle"
+font-size="22">
+梁幅
+</text>
+"""
+
 svg += "</svg>"
 
 components.html(
     svg,
-    height=900,
+    height=1150,
     scrolling=False,
 )
-
-beam_no = list(range(1, len(beam_bars)+1))
-column_no = list(range(1, len(column_bars)+1))
-
-beam_table = pd.DataFrame([
-    ["梁筋"] + beam_no + [""] * (8-len(beam_no)),
-    ["梁筋の座標"] + beam_bars + [""] * (8-len(beam_bars))
-])
-
-column_table = pd.DataFrame([
-    ["柱筋"] + column_no,
-    ["柱筋の座標"] + column_bars
-])
-
-beam_table.columns = [" " * (i + 1) for i in range(len(beam_table.columns))]
-column_table.columns = [" " * (i + 1) for i in range(len(column_table.columns))]
-
-st.table(column_table)
-st.write("")
-st.table(beam_table)
