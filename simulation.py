@@ -93,6 +93,15 @@ for x in column_bars:
     y2="0"
     stroke="black"
     stroke-width="1"/>
+
+    <line
+    x1="0"
+    y1="-40"
+    x2="{C}"
+    y2="-40"
+    stroke="black"
+    stroke-width="1"/>
+
     """
 
     center = (previous + x) / 2
