@@ -22,7 +22,7 @@ CR = CL+C
 svg = f"""
 <svg
 xmlns="http://www.w3.org/2000/svg"
-viewBox="-80 -120 1010 1160"
+viewBox="-80 -120 1010 1300"
 preserveAspectRatio="xMidYMid meet"
 style="width:100%;height:auto;">
 
@@ -290,6 +290,6 @@ components.html(
         {svg}
     </div>
     """,
-    height=1500,
+    height=1200,
     scrolling=False,
 )
