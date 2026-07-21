@@ -117,7 +117,7 @@ for x in column_bars:
     """
 
 
-previous = x
+
 
 last = CR - column_bars[-1]
 
