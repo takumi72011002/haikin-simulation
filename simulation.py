@@ -252,6 +252,15 @@ font-size="16">
 </text>
 """
 
+svg += f"""
+    <line
+        x1="{CL+100}"
+        y1="940"
+        x2="{CR-100}"
+        y2="940"
+        stroke="black"
+        stroke-width="1"/>
+    """
 
 # ==================================================
 # 下　梁幅
@@ -264,14 +273,12 @@ y1="1020"
 x2="{CR-100}"
 y2="1020"
 stroke="black"
-stroke-width="2"
-marker-start="url(#arrow)"
-marker-end="url(#arrow)"/>
+stroke-width="2"/>
 
 <line
 x1="{CL+100}"
 y1="900"
-x2="{CL}"
+x2="{CL+100}"
 y2="1020"
 stroke="black"
 stroke-width="2"/>
