@@ -15,8 +15,8 @@ st.title("配筋シミュレーション")
 beam_bars = [180, 300, 390, 450, 510, 600, 720]
 column_bars = [90, 240, 320, 390, 480, 560, 660, 770]
 
-C=600
-CL = 100
+C=850
+CL = 0
 CR = CL+C
 
 svg = f"""
@@ -39,7 +39,7 @@ orient="auto">
 """
 
 # ==================================================
-# 上　柱幅
+# 寸法線　柱幅
 # ==================================================
 
 svg += f"""
@@ -50,8 +50,7 @@ x2="{CR}"
 y2="-80"
 stroke="black"
 stroke-width="2"
-marker-start="url(#arrow)"
-marker-end="url(#arrow)"/>
+
 
 <line
 x1="{CL}"
@@ -74,7 +73,7 @@ x="{(CL+CR)/2}"
 y="-92"
 text-anchor="middle"
 font-size="22">
-C
+{C}
 </text>
 """
 
@@ -92,7 +91,7 @@ for x in column_bars:
     y1="-40"
     x2="{x}"
     y2="0"
-    stroke="gray"
+    stroke="black"
     stroke-width="1"/>
     """
 
@@ -101,7 +100,7 @@ for x in column_bars:
     svg += f"""
     <text
     x="{center}"
-    y="-48"
+    y="-50"
     text-anchor="middle"
     font-size="16">
     {x-previous}
@@ -110,17 +109,7 @@ for x in column_bars:
 
     previous = x
 
-last = CR - column_bars[-1]
 
-svg += f"""
-<text
-x="{(CR+column_bars[-1])/2}"
-y="-48"
-text-anchor="middle"
-font-size="16">
-{last}
-</text>
-"""
 
 
 # ==================================================
