@@ -16,6 +16,7 @@ beam_bars = [180, 300, 390, 450, 510, 600, 720]
 column_bars = [90, 240, 320, 390, 480, 560, 660, 770]
 
 C=850
+B=650
 CL = 0
 CR = CL+C
 
@@ -269,9 +270,9 @@ svg += f"""
 svg += f"""
 <line
 x1="{CL+100}"
-y1="1020"
+y1="980"
 x2="{CR-100}"
-y2="1020"
+y2="980"
 stroke="black"
 stroke-width="2"/>
 
@@ -279,7 +280,7 @@ stroke-width="2"/>
 x1="{CL+100}"
 y1="900"
 x2="{CL+100}"
-y2="1020"
+y2="980"
 stroke="black"
 stroke-width="2"/>
 
@@ -287,7 +288,7 @@ stroke-width="2"/>
 x1="{CR-100}"
 y1="900"
 x2="{CR-100}"
-y2="1020"
+y2="980"
 stroke="black"
 stroke-width="2"/>
 
@@ -296,7 +297,7 @@ x="{(CL+CR)/2}"
 y="1045"
 text-anchor="middle"
 font-size="22">
-B
+{B}
 </text>
 """
 
