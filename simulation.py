@@ -119,17 +119,7 @@ for x in column_bars:
 
 
 
-last = CR - column_bars[-1]
 
-svg += f"""
-<text
-x="{(CR+column_bars[-1])/2}"
-y="-50"
-text-anchor="middle"
-font-size="16">
-{last}
-</text>
-"""
 
 
 # ==================================================
