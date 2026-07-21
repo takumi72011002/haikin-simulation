@@ -15,8 +15,9 @@ st.title("配筋シミュレーション")
 beam_bars = [180, 300, 390, 450, 510, 600, 720]
 column_bars = [90, 240, 320, 390, 480, 560, 660, 770]
 
-COLUMN_LEFT = 100
-COLUMN_RIGHT = 750
+C=600
+CL = 100
+CR = CL+C
 
 svg = f"""
 <svg
@@ -43,9 +44,9 @@ orient="auto">
 
 svg += f"""
 <line
-x1="{COLUMN_LEFT}"
+x1="{CL}"
 y1="-80"
-x2="{COLUMN_RIGHT}"
+x2="{CR}"
 y2="-80"
 stroke="black"
 stroke-width="2"
@@ -53,27 +54,27 @@ marker-start="url(#arrow)"
 marker-end="url(#arrow)"/>
 
 <line
-x1="{COLUMN_LEFT}"
+x1="{CL}"
 y1="-80"
-x2="{COLUMN_LEFT}"
+x2="{CL}"
 y2="0"
 stroke="black"
 stroke-width="2"/>
 
 <line
-x1="{COLUMN_RIGHT}"
+x1="{CR}"
 y1="-80"
-x2="{COLUMN_RIGHT}"
+x2="{CR}"
 y2="0"
 stroke="black"
 stroke-width="2"/>
 
 <text
-x="{(COLUMN_LEFT+COLUMN_RIGHT)/2}"
+x="{(CL+CR)/2}"
 y="-92"
 text-anchor="middle"
 font-size="22">
-柱幅
+C
 </text>
 """
 
@@ -109,11 +110,11 @@ for x in column_bars:
 
     previous = x
 
-last = COLUMN_RIGHT - column_bars[-1]
+last = CR - column_bars[-1]
 
 svg += f"""
 <text
-x="{(COLUMN_RIGHT+column_bars[-1])/2}"
+x="{(CR+column_bars[-1])/2}"
 y="-48"
 text-anchor="middle"
 font-size="16">
@@ -228,11 +229,11 @@ for x in beam_bars:
 
     previous = x
 
-last = COLUMN_RIGHT - beam_bars[-1]
+last = CR - beam_bars[-1]
 
 svg += f"""
 <text
-x="{(COLUMN_RIGHT+beam_bars[-1])/2}"
+x="{(CR+beam_bars[-1])/2}"
 y="960"
 text-anchor="middle"
 font-size="16">
@@ -247,9 +248,9 @@ font-size="16">
 
 svg += f"""
 <line
-x1="{COLUMN_LEFT}"
+x1="{CL}"
 y1="1020"
-x2="{COLUMN_RIGHT}"
+x2="{CR}"
 y2="1020"
 stroke="black"
 stroke-width="2"
@@ -257,34 +258,38 @@ marker-start="url(#arrow)"
 marker-end="url(#arrow)"/>
 
 <line
-x1="{COLUMN_LEFT}"
+x1="{CL}"
 y1="900"
-x2="{COLUMN_LEFT}"
+x2="{CL}"
 y2="1020"
 stroke="black"
 stroke-width="2"/>
 
 <line
-x1="{COLUMN_RIGHT}"
+x1="{CR}"
 y1="900"
-x2="{COLUMN_RIGHT}"
+x2="{CR}"
 y2="1020"
 stroke="black"
 stroke-width="2"/>
 
 <text
-x="{(COLUMN_LEFT+COLUMN_RIGHT)/2}"
+x="{(CL+CR)/2}"
 y="1045"
 text-anchor="middle"
 font-size="22">
-梁幅
+B
 </text>
 """
 
 svg += "</svg>"
 
 components.html(
-    svg,
-    height=1150,
+    f"""
+    <div style="width:100%;">
+        {svg}
+    </div>
+    """,
+    height=1300,
     scrolling=False,
 )
