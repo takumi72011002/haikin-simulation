@@ -49,13 +49,13 @@ y1="-80"
 x2="{CR}"
 y2="-80"
 stroke="black"
-stroke-width="2"
+stroke-width="2"/>
 
 
 <line
-x1="{CL+1}"
+x1="{CL}"
 y1="-80"
-x2="{CL+1}"
+x2="{CL}"
 y2="0"
 stroke="black"
 stroke-width="2"/>
