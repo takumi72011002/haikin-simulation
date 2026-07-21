@@ -135,7 +135,7 @@ svg += f"""
 
 
 # ==================================================
-# 柱
+# コンクリート
 # ==================================================
 
 svg += """
@@ -212,7 +212,7 @@ for x in column_bars:
 # 下　梁筋寸法チェーン
 # ==================================================
 
-previous = 0
+previous = 100
 
 for x in beam_bars:
 
@@ -222,7 +222,7 @@ for x in beam_bars:
         y1="900"
         x2="{x}"
         y2="940"
-        stroke="gray"
+        stroke="black"
         stroke-width="1"/>
     """
 
@@ -240,11 +240,11 @@ for x in beam_bars:
 
     previous = x
 
-last = CR - beam_bars[-1]
+last = CR -100 - beam_bars[-1]
 
 svg += f"""
 <text
-x="{(CR+beam_bars[-1])/2}"
+x="{(CR-100+beam_bars[-1])/2}"
 y="960"
 text-anchor="middle"
 font-size="16">
@@ -259,9 +259,9 @@ font-size="16">
 
 svg += f"""
 <line
-x1="{CL}"
+x1="{CL+100}"
 y1="1020"
-x2="{CR}"
+x2="{CR-100}"
 y2="1020"
 stroke="black"
 stroke-width="2"
@@ -269,7 +269,7 @@ marker-start="url(#arrow)"
 marker-end="url(#arrow)"/>
 
 <line
-x1="{CL}"
+x1="{CL+100}"
 y1="900"
 x2="{CL}"
 y2="1020"
@@ -277,9 +277,9 @@ stroke="black"
 stroke-width="2"/>
 
 <line
-x1="{CR}"
+x1="{CR-100}"
 y1="900"
-x2="{CR}"
+x2="{CR-100}"
 y2="1020"
 stroke="black"
 stroke-width="2"/>
