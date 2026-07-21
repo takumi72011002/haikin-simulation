@@ -294,7 +294,7 @@ stroke-width="2"/>
 
 <text
 x="{(CL+CR)/2}"
-y="1000"
+y="1020"
 text-anchor="middle"
 font-size="22">
 {B}
