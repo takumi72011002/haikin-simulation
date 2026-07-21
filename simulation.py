@@ -116,7 +116,7 @@ for x in column_bars:
     </text>
     """
 
-
+previous = x
 
 
 
