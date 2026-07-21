@@ -91,17 +91,8 @@ for x in column_bars:
     y1="-40"
     x2="{x}"
     y2="0"
-    stroke="black"
+    stroke="gray"
     stroke-width="1"/>
-
-    <line
-    x1="0"
-    y1="-40"
-    x2="{C}"
-    y2="-40"
-    stroke="black"
-    stroke-width="1"/>
-
     """
 
     center = (previous + x) / 2
@@ -109,16 +100,26 @@ for x in column_bars:
     svg += f"""
     <text
     x="{center}"
-    y="-50"
+    y="-48"
     text-anchor="middle"
     font-size="16">
     {x-previous}
     </text>
     """
 
-previous = x
+    previous = x
 
+last = CR - column_bars[-1]
 
+svg += f"""
+<text
+x="{(CR+column_bars[-1])/2}"
+y="-48"
+text-anchor="middle"
+font-size="16">
+{last}
+</text>
+"""
 
 
 
