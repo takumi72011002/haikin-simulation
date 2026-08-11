@@ -8,79 +8,117 @@ st.set_page_config(
 
 st.title("配筋シミュレーション")
 
-# ==========================================
+
+# ==========================================================
 # 配筋データ
-# ==========================================
+# ==========================================================
 
-beam_bars = [180, 300, 390, 450, 510, 600, 720]
-column_bars = [90, 240, 320, 390, 480, 560, 660, 770]
+# ---------- 柱 ----------
+column_width = 1200          # 柱幅 mm
+column_bar_d = 38            # 柱筋 D
+tie_bar_d = 13               # 帯筋 D
+column_bar_num = 8           # 柱筋本数
 
-C=850
-B=650
-CL = 0
-CR = CL+C
+column_bars = [
+    85,
+    226,
+    384,
+    522,
+    677,
+    874,
+    995,
+    1115
+]
+
+
+# ---------- 梁 ----------
+beam_width = 750             # 梁幅 mm
+beam_bar_d = 19              # 梁筋 D
+stirrup_d = 13               # あばら筋 D
+beam_bar_num = 7             # 梁筋本数
+
+beam_bars = [
+    259,
+    351,
+    453,
+    554,
+    644,
+    744,
+    842
+]
+
+
+# ==========================================================
+# 表示用設定
+# ==========================================================
+
+# 柱の高さ
+column_height = 900
+
+# 柱・梁の中心
+column_center = column_width / 2
+
+# 梁は柱の中央に配置
+beam_left = (column_width - beam_width) / 2
+beam_right = beam_left + beam_width
+
+
+# ==========================================================
+# SVG開始
+# ==========================================================
 
 svg = f"""
 <svg
-xmlns="http://www.w3.org/2000/svg"
-viewBox="-80 -120 1010 1300"
-preserveAspectRatio="xMidYMid meet"
-style="width:100%;height:auto;">
+    width="100%"
+    viewBox="-100 -130 {column_width + 200} 1200"
+    xmlns="http://www.w3.org/2000/svg"
+>
 
-<defs>
-<marker id="arrow"
-markerWidth="8"
-markerHeight="8"
-refX="4"
-refY="4"
-orient="auto">
-<path d="M0,0 L8,4 L0,8 Z" fill="black"/>
-</marker>
-</defs>
-"""
 
-# ==================================================
-# 寸法線　柱幅
-# ==================================================
-
-svg += f"""
-<line
-x1="{CL}"
-y1="-80"
-x2="{CR}"
-y2="-80"
-stroke="black"
-stroke-width="2"/>
-
+<!-- =====================================================
+     上側：柱幅寸法
+     ===================================================== -->
 
 <line
-x1="{CL}"
-y1="-80"
-x2="{CL}"
-y2="0"
-stroke="black"
-stroke-width="2"/>
+    x1="0"
+    y1="-60"
+    x2="{column_width}"
+    y2="-60"
+    stroke="black"
+    stroke-width="1"
+/>
 
 <line
-x1="{CR}"
-y1="-80"
-x2="{CR}"
-y2="0"
-stroke="black"
-stroke-width="2"/>
+    x1="0"
+    y1="-60"
+    x2="0"
+    y2="0"
+    stroke="black"
+    stroke-width="1"
+/>
+
+<line
+    x1="{column_width}"
+    y1="-60"
+    x2="{column_width}"
+    y2="0"
+    stroke="black"
+    stroke-width="1"
+/>
 
 <text
-x="{(CL+CR)/2}"
-y="-92"
-text-anchor="middle"
-font-size="22">
-{C}
+    x="{column_center}"
+    y="-75"
+    text-anchor="middle"
+    font-size="18">
+    {column_width}
 </text>
 """
 
-# ==================================================
-# 上　柱筋寸法チェーン
-# ==================================================
+
+# ==========================================================
+# 上側：柱筋寸法チェーン
+# ==========================================================
 
 previous = 0
 
@@ -88,196 +126,13 @@ for x in column_bars:
 
     svg += f"""
     <line
-    x1="{x}"
-    y1="-40"
-    x2="{x}"
-    y2="0"
-    stroke="black"
-    stroke-width="1"/>
-    """
-
-    center = (previous + x) / 2
-
-    svg += f"""
-    <text
-    x="{center}"
-    y="-48"
-    text-anchor="middle"
-    font-size="16">
-    {x-previous}
-    </text>
-    """
-
-    previous = x
-
-last = CR - column_bars[-1]
-
-svg += f"""
-<text
-x="{(CR+column_bars[-1])/2}"
-y="-48"
-text-anchor="middle"
-font-size="16">
-{last}
-</text>
-"""
-
-svg += f"""
-    <line
-    x1="{CL}"
-    y1="-40"
-    x2="{CR}"
-    y2="-40"
-    stroke="black"
-    stroke-width="1"/>
-    """
-
-
-
-
-# ==================================================
-# コンクリート
-# ==================================================
-
-svg += """
-<path
-d="
-M100 0
-L750 0
-L750 100
-L850 100
-L850 800
-L750 800
-L750 900
-L100 900
-L100 800
-L0 800
-L0 100
-L100 100
-Z"
-fill="#ececec"
-stroke="black"
-stroke-width="2"/>
-
-<!-- 上下の線を消す -->
-<line x1="100" y1="0" x2="750" y2="0"
-      stroke="#ececec"
-      stroke-width="3"/>
-
-<line x1="100" y1="900" x2="750" y2="900"
-      stroke="#ececec"
-      stroke-width="3"/>
-"""
-
-# ==================================================
-# 梁筋
-# ==================================================
-
-for x in beam_bars:
-
-    svg += f"""
-    <line
         x1="{x}"
-        y1="0"
+        y1="-40"
         x2="{x}"
-        y2="900"
-        stroke="#222"
-        stroke-width="12"/>
-    """
-
-
-
-
-
-
-# ==================================================
-# 帯筋
-# ==================================================
-
-svg += """
-<!-- 帯筋 -->
-<path
-d="
-M90 180
-A20 20 0 0 1 110 160
-H740
-A20 20 0 0 1 760 180
-V720
-A20 20 0 0 1 740 740
-H90
-A20 20 0 0 1 70 720
-V200
-"
-fill="none"
-stroke="#333"
-stroke-width="12"
-stroke-linecap="round"
-stroke-linejoin="round"/>
-
-<!-- フック -->
-<path
-d="
-M90 200
-L140 240
-"
-fill="none"
-stroke="#333"
-stroke-width="12"
-stroke-linecap="round"
-stroke-linejoin="round"/>
-"""
-
-
-
-
-
-
-
-
-
-
-
-
-# ==================================================
-# 柱筋
-# ==================================================
-
-for x in column_bars:
-
-    svg += f"""
-    <circle
-        cx="{x}"
-        cy="160"
-        r="18"
-        fill="#666"
+        y2="0"
         stroke="black"
-        stroke-width="1"/>
-
-    <circle
-        cx="{x}"
-        cy="740"
-        r="18"
-        fill="#666"
-        stroke="black"
-        stroke-width="1"/>
-    """
-
-# ==================================================
-# 下　梁筋寸法チェーン
-# ==================================================
-
-previous = 100
-
-for x in beam_bars:
-
-    svg += f"""
-    <line
-        x1="{x}"
-        y1="900"
-        x2="{x}"
-        y2="940"
-        stroke="black"
-        stroke-width="1"/>
+        stroke-width="1"
+    />
     """
 
     center = (previous + x) / 2
@@ -285,86 +140,259 @@ for x in beam_bars:
     svg += f"""
     <text
         x="{center}"
-        y="960"
+        y="-50"
         text-anchor="middle"
         font-size="16">
-        {x-previous}
+        {x - previous}
     </text>
     """
 
     previous = x
 
-last = CR -100 - beam_bars[-1]
+
+# 最後の区間
+last = column_width - column_bars[-1]
 
 svg += f"""
+<line
+    x1="{column_bars[-1]}"
+    y1="-40"
+    x2="{column_bars[-1]}"
+    y2="0"
+    stroke="black"
+    stroke-width="1"
+/>
+
 <text
-x="{(CR-100+beam_bars[-1])/2}"
-y="960"
-text-anchor="middle"
-font-size="16">
-{last}
+    x="{column_bars[-1] + last / 2}"
+    y="-50"
+    text-anchor="middle"
+    font-size="16">
+    {last}
 </text>
 """
 
+
+# ==========================================================
+# コンクリート
+# ==========================================================
+
 svg += f"""
-    <line
-        x1="{CL+100}"
-        y1="940"
-        x2="{CR-100}"
-        y2="940"
-        stroke="black"
-        stroke-width="1"/>
+<!-- 柱 -->
+<rect
+    x="0"
+    y="0"
+    width="{column_width}"
+    height="{column_height}"
+    fill="#eeeeee"
+    stroke="black"
+    stroke-width="2"
+/>
+"""
+
+
+# ==========================================================
+# 梁筋
+# ==========================================================
+# 梁筋は長方形で描画
+# 太さ = beam_bar_d
+# ==========================================================
+
+for x in beam_bars:
+
+    svg += f"""
+    <rect
+        x="{x - beam_bar_d / 2}"
+        y="0"
+        width="{beam_bar_d}"
+        height="{column_height}"
+        fill="#222222"
+    />
     """
 
-# ==================================================
-# 下　梁幅
-# ==================================================
+
+# ==========================================================
+# 帯筋
+# ==========================================================
+# 帯筋は長方形
+# 太さ = tie_bar_d
+# ==========================================================
+
+tie_x = 70
+tie_y = 160
+tie_width = column_width - 140
+tie_height = column_height - 320
+
+svg += f"""
+<rect
+    x="{tie_x}"
+    y="{tie_y}"
+    width="{tie_width}"
+    height="{tie_height}"
+    fill="none"
+    stroke="#333333"
+    stroke-width="{tie_bar_d}"
+/>
+"""
+
+
+# ==========================================================
+# 帯筋フック
+# ==========================================================
 
 svg += f"""
 <line
-x1="{CL+100}"
-y1="980"
-x2="{CR-100}"
-y2="980"
-stroke="black"
-stroke-width="2"/>
+    x1="{tie_x}"
+    y1="{tie_y + 40}"
+    x2="{tie_x + 65}"
+    y2="{tie_y + 95}"
+    stroke="#333333"
+    stroke-width="{tie_bar_d}"
+    stroke-linecap="round"
+/>
+"""
 
-<line
-x1="{CL+100}"
-y1="900"
-x2="{CL+100}"
-y2="980"
-stroke="black"
-stroke-width="2"/>
 
+# ==========================================================
+# 柱筋
+# ==========================================================
+# D38 → 円の直径38
+# 半径 = 19
+# ==========================================================
+
+column_bar_r = column_bar_d / 2
+
+for x in column_bars:
+
+    svg += f"""
+    <circle
+        cx="{x}"
+        cy="{tie_y}"
+        r="{column_bar_r}"
+        fill="#666666"
+        stroke="black"
+        stroke-width="1"
+    />
+
+    <circle
+        cx="{x}"
+        cy="{tie_y + tie_height}"
+        r="{column_bar_r}"
+        fill="#666666"
+        stroke="black"
+        stroke-width="1"
+    />
+    """
+
+
+# ==========================================================
+# 下側：梁筋寸法チェーン
+# ==========================================================
+
+previous = beam_left
+
+for x in beam_bars:
+
+    svg += f"""
+    <line
+        x1="{x}"
+        y1="{column_height}"
+        x2="{x}"
+        y2="{column_height + 40}"
+        stroke="black"
+        stroke-width="1"
+    />
+    """
+
+    center = (previous + x) / 2
+
+    svg += f"""
+    <text
+        x="{center}"
+        y="{column_height + 60}"
+        text-anchor="middle"
+        font-size="16">
+        {x - previous:.0f}
+    </text>
+    """
+
+    previous = x
+
+
+# 最後の区間
+
+last = beam_right - beam_bars[-1]
+
+svg += f"""
 <line
-x1="{CR-100}"
-y1="900"
-x2="{CR-100}"
-y2="980"
-stroke="black"
-stroke-width="2"/>
+    x1="{beam_bars[-1]}"
+    y1="{column_height}"
+    x2="{beam_bars[-1]}"
+    y2="{column_height + 40}"
+    stroke="black"
+    stroke-width="1"
+/>
 
 <text
-x="{(CL+CR)/2}"
-y="1010"
-text-anchor="middle"
-font-size="22">
-{B}
+    x="{beam_bars[-1] + last / 2}"
+    y="{column_height + 60}"
+    text-anchor="middle"
+    font-size="16">
+    {last:.0f}
 </text>
 """
 
-svg += "</svg>"
+
+# ==========================================================
+# 下側：梁幅
+# ==========================================================
+
+svg += f"""
+<line
+    x1="{beam_left}"
+    y1="{column_height + 90}"
+    x2="{beam_right}"
+    y2="{column_height + 90}"
+    stroke="black"
+    stroke-width="1"
+/>
+
+<line
+    x1="{beam_left}"
+    y1="{column_height}"
+    x2="{beam_left}"
+    y2="{column_height + 90}"
+    stroke="black"
+    stroke-width="1"
+/>
+
+<line
+    x1="{beam_right}"
+    y1="{column_height}"
+    x2="{beam_right}"
+    y2="{column_height + 90}"
+    stroke="black"
+    stroke-width="1"
+/>
+
+<text
+    x="{(beam_left + beam_right) / 2}"
+    y="{column_height + 120}"
+    text-anchor="middle"
+    font-size="20">
+    {beam_width}
+</text>
+
+</svg>
+"""
+
+
+# ==========================================================
+# 表示
+# ==========================================================
 
 components.html(
-    f"""
-    <div style="width:100%;">
-        {svg}
-    </div>
-    """,
+    svg,
     height=1200,
     scrolling=False,
 )
-
-
-
