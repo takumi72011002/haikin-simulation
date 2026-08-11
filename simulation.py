@@ -19,19 +19,16 @@ st.title("配筋シミュレーション")
 # 配筋条件
 # ==========================================================
 
-# ----------------------------------------------------------
+# ------------------------------
 # 柱
-# ----------------------------------------------------------
+# ------------------------------
 
-COLUMN_WIDTH = 1200          # 柱幅(mm)
-COLUMN_HEIGHT = 1200         # 柱せい(mm)
+COLUMN_WIDTH = 1200
+COLUMN_HEIGHT = 1200
 
-COLUMN_BAR_D = 38            # 柱筋 D
-TIE_BAR_D = 13               # 帯筋 D
-COLUMN_BAR_NUM = 8           # 柱筋本数
+COLUMN_BAR_D = 38
+TIE_BAR_D = 13
 
-
-# 柱筋のX座標(mm)
 COLUMN_BARS = [
     85,
     226,
@@ -44,17 +41,15 @@ COLUMN_BARS = [
 ]
 
 
-# ----------------------------------------------------------
+# ------------------------------
 # 梁
-# ----------------------------------------------------------
+# ------------------------------
 
-BEAM_WIDTH = 750             # 梁幅(mm)
-BEAM_BAR_D = 19              # 梁筋 D
-STIRRUP_D = 13               # あばら筋 D
-BEAM_BAR_NUM = 7             # 梁筋本数
+BEAM_WIDTH = 750
 
+BEAM_BAR_D = 19
+STIRRUP_D = 13
 
-# 梁筋のX座標(mm)
 BEAM_BARS = [
     259,
     351,
@@ -66,29 +61,36 @@ BEAM_BARS = [
 ]
 
 
-# ----------------------------------------------------------
+# ==========================================================
 # 梁の長さ
-# ----------------------------------------------------------
+# ==========================================================
+#
+# ここを変更すれば上下方向の梁の長さを変更できる
+#
+# ==========================================================
 
-BEAM_LENGTH_TOP = 400
-BEAM_LENGTH_BOTTOM = 400
+BEAM_LENGTH_TOP = 250
+BEAM_LENGTH_BOTTOM = 250
 
 
 # ==========================================================
-# 座標計算
+# 座標
 # ==========================================================
 
-# 梁は柱の中央に配置
+# 梁幅750を柱1200の中央に配置
+
 BEAM_LEFT = (COLUMN_WIDTH - BEAM_WIDTH) / 2
 BEAM_RIGHT = BEAM_LEFT + BEAM_WIDTH
 
 
-# 柱の上下位置
+# 柱の上下端
+
 COLUMN_TOP = 0
 COLUMN_BOTTOM = COLUMN_HEIGHT
 
 
-# 梁の上下端
+# 梁の範囲
+
 TOP_BEAM_TOP = -BEAM_LENGTH_TOP
 TOP_BEAM_BOTTOM = 0
 
@@ -97,21 +99,31 @@ BOTTOM_BEAM_BOTTOM = COLUMN_HEIGHT + BEAM_LENGTH_BOTTOM
 
 
 # ==========================================================
-# SVG開始
+# 柱筋のY座標
+# ==========================================================
+#
+# X方向と同じ85mmを採用
+#
+# ==========================================================
+
+COLUMN_BAR_Y_TOP = 85
+COLUMN_BAR_Y_BOTTOM = COLUMN_HEIGHT - 85
+
+
+# ==========================================================
+# SVG
 # ==========================================================
 
 svg = f"""
 <svg
     xmlns="http://www.w3.org/2000/svg"
     width="100%"
-    viewBox="-180 -620 1560 2450"
+    viewBox="-150 -500 1500 2200"
 >
 
 
 <!-- ======================================================
-     コンクリート
-     中央：1200×1200の柱
-     上下：梁幅750
+     コンクリート外形
      ====================================================== -->
 
 <path
@@ -119,19 +131,19 @@ svg = f"""
         M {BEAM_LEFT} {TOP_BEAM_TOP}
 
         H {BEAM_RIGHT}
-        V {COLUMN_TOP}
+        V 0
 
         H {COLUMN_WIDTH}
-        V {COLUMN_BOTTOM}
+        V {COLUMN_HEIGHT}
 
         H {BEAM_RIGHT}
         V {BOTTOM_BEAM_BOTTOM}
 
         H {BEAM_LEFT}
-        V {COLUMN_BOTTOM}
+        V {COLUMN_HEIGHT}
 
         H 0
-        V {COLUMN_TOP}
+        V 0
 
         H {BEAM_LEFT}
         Z
@@ -147,12 +159,13 @@ svg = f"""
 # 帯筋
 # ==========================================================
 #
-# 柱の内部に矩形の帯筋を描く
+# 正方形の柱の中に配置
 #
 # ==========================================================
 
 TIE_LEFT = 70
 TIE_RIGHT = COLUMN_WIDTH - 70
+
 TIE_TOP = 70
 TIE_BOTTOM = COLUMN_HEIGHT - 70
 
@@ -177,9 +190,9 @@ svg += f"""
 svg += f"""
 <line
     x1="{TIE_LEFT}"
-    y1="{TIE_TOP + 40}"
+    y1="{TIE_TOP + 35}"
     x2="{TIE_LEFT + 65}"
-    y2="{TIE_TOP + 95}"
+    y2="{TIE_TOP + 90}"
     stroke="#333333"
     stroke-width="{TIE_BAR_D}"
     stroke-linecap="round"
@@ -188,95 +201,87 @@ svg += f"""
 
 
 # ==========================================================
-# 柱筋
-# ==========================================================
-#
-# 柱筋はD38なので、円の直径を38として表示
-#
-# 上下の横方向に配置
-#
-# ==========================================================
-
-COLUMN_BAR_RADIUS = COLUMN_BAR_D / 2
-
-for x in COLUMN_BARS:
-
-    # 上側
-    svg += f"""
-    <circle
-        cx="{x}"
-        cy="{TIE_TOP}"
-        r="{COLUMN_BAR_RADIUS}"
-        fill="#666666"
-        stroke="black"
-        stroke-width="1"
-    />
-    """
-
-    # 下側
-    svg += f"""
-    <circle
-        cx="{x}"
-        cy="{TIE_BOTTOM}"
-        r="{COLUMN_BAR_RADIUS}"
-        fill="#666666"
-        stroke="black"
-        stroke-width="1"
-    />
-    """
-
-
-# ==========================================================
 # 梁筋
 # ==========================================================
 #
-# 梁筋は長方形
+# ★重要
 #
-# 上梁と下梁に配置
+# 梁筋は
+#
+# 上梁
+#   ↓
+# 柱の中
+#   ↓
+# 下梁
+#
+# まで連続して描く
 #
 # ==========================================================
 
 for x in BEAM_BARS:
-
-    # ------------------------------
-    # 上梁
-    # ------------------------------
 
     svg += f"""
     <rect
         x="{x - BEAM_BAR_D / 2}"
         y="{TOP_BEAM_TOP}"
         width="{BEAM_BAR_D}"
-        height="{BEAM_LENGTH_TOP}"
+        height="{BOTTOM_BEAM_BOTTOM - TOP_BEAM_TOP}"
         fill="#222222"
     />
     """
 
 
-    # ------------------------------
-    # 下梁
-    # ------------------------------
+# ==========================================================
+# 柱筋
+# ==========================================================
+#
+# ExcelのX座標をそのまま使用
+#
+# 上側：Y=85
+# 下側：Y=1115
+#
+# ==========================================================
+
+COLUMN_BAR_RADIUS = COLUMN_BAR_D / 2
+
+
+for x in COLUMN_BARS:
+
+    # 上側
 
     svg += f"""
-    <rect
-        x="{x - BEAM_BAR_D / 2}"
-        y="{BOTTOM_BEAM_TOP}"
-        width="{BEAM_BAR_D}"
-        height="{BEAM_LENGTH_BOTTOM}"
-        fill="#222222"
+    <circle
+        cx="{x}"
+        cy="{COLUMN_BAR_Y_TOP}"
+        r="{COLUMN_BAR_RADIUS}"
+        fill="#666666"
+        stroke="black"
+        stroke-width="1"
+    />
+    """
+
+
+    # 下側
+
+    svg += f"""
+    <circle
+        cx="{x}"
+        cy="{COLUMN_BAR_Y_BOTTOM}"
+        r="{COLUMN_BAR_RADIUS}"
+        fill="#666666"
+        stroke="black"
+        stroke-width="1"
     />
     """
 
 
 # ==========================================================
-# 上側：柱幅寸法
+# 上側：柱幅
 # ==========================================================
 
-COLUMN_DIM_Y = -520
+COLUMN_DIM_Y = -410
 
 svg += f"""
-<!-- 柱幅寸法線 -->
-
 <line
     x1="0"
     y1="{COLUMN_DIM_Y}"
@@ -290,7 +295,7 @@ svg += f"""
     x1="0"
     y1="{COLUMN_DIM_Y}"
     x2="0"
-    y2="-450"
+    y2="-340"
     stroke="black"
     stroke-width="1"
 />
@@ -299,7 +304,7 @@ svg += f"""
     x1="{COLUMN_WIDTH}"
     y1="{COLUMN_DIM_Y}"
     x2="{COLUMN_WIDTH}"
-    y2="-450"
+    y2="-340"
     stroke="black"
     stroke-width="1"
 />
@@ -315,39 +320,33 @@ svg += f"""
 
 
 # ==========================================================
-# 上側：柱筋の寸法チェーン
+# 上側：柱筋寸法
 # ==========================================================
 
-COLUMN_CHAIN_Y = -450
+CHAIN_Y = -340
 
 previous = 0
 
 for x in COLUMN_BARS:
 
-    # 寸法線の縦線
+    distance = x - previous
+    center = (previous + x) / 2
+
     svg += f"""
     <line
         x1="{x}"
-        y1="{COLUMN_CHAIN_Y}"
+        y1="{CHAIN_Y}"
         x2="{x}"
-        y2="-400"
+        y2="-300"
         stroke="black"
         stroke-width="1"
     />
-    """
 
-    # 中央位置
-    center = (previous + x) / 2
-
-    # 寸法値
-    distance = x - previous
-
-    svg += f"""
     <text
         x="{center}"
-        y="{COLUMN_CHAIN_Y - 15}"
+        y="{CHAIN_Y - 12}"
         text-anchor="middle"
-        font-size="16">
+        font-size="15">
         {distance}
     </text>
     """
@@ -355,38 +354,42 @@ for x in COLUMN_BARS:
     previous = x
 
 
-# 最後の区間
-last_distance = COLUMN_WIDTH - COLUMN_BARS[-1]
+# 最後
+
+last = COLUMN_WIDTH - COLUMN_BARS[-1]
 
 svg += f"""
 <line
     x1="{COLUMN_BARS[-1]}"
-    y1="{COLUMN_CHAIN_Y}"
+    y1="{CHAIN_Y}"
     x2="{COLUMN_BARS[-1]}"
-    y2="-400"
+    y2="-300"
     stroke="black"
     stroke-width="1"
 />
 
 <text
-    x="{COLUMN_BARS[-1] + last_distance / 2}"
-    y="{COLUMN_CHAIN_Y - 15}"
+    x="{COLUMN_BARS[-1] + last / 2}"
+    y="{CHAIN_Y - 12}"
     text-anchor="middle"
-    font-size="16">
-    {last_distance}
+    font-size="15">
+    {last}
 </text>
 """
 
 
 # ==========================================================
-# 下側：梁筋寸法チェーン
+# 下側：梁筋寸法
 # ==========================================================
 
-BEAM_CHAIN_Y = BOTTOM_BEAM_BOTTOM + 60
+BEAM_CHAIN_Y = BOTTOM_BEAM_BOTTOM + 70
 
-previous = BEAM_LEFT
+previous = 0
 
 for x in BEAM_BARS:
+
+    distance = x - previous
+    center = (previous + x) / 2
 
     svg += f"""
     <line
@@ -397,26 +400,22 @@ for x in BEAM_BARS:
         stroke="black"
         stroke-width="1"
     />
-    """
 
-    center = (previous + x) / 2
-    distance = x - previous
-
-    svg += f"""
     <text
         x="{center}"
-        y="{BEAM_CHAIN_Y + 25}"
+        y="{BEAM_CHAIN_Y + 20}"
         text-anchor="middle"
-        font-size="16">
-        {distance:.0f}
+        font-size="15">
+        {distance}
     </text>
     """
 
     previous = x
 
 
-# 最後の区間
-last_distance = BEAM_RIGHT - BEAM_BARS[-1]
+# 最後
+
+last = COLUMN_WIDTH - BEAM_BARS[-1]
 
 svg += f"""
 <line
@@ -429,24 +428,22 @@ svg += f"""
 />
 
 <text
-    x="{BEAM_BARS[-1] + last_distance / 2}"
-    y="{BEAM_CHAIN_Y + 25}"
+    x="{BEAM_BARS[-1] + last / 2}"
+    y="{BEAM_CHAIN_Y + 20}"
     text-anchor="middle"
-    font-size="16">
-    {last_distance:.0f}
+    font-size="15">
+    {last}
 </text>
 """
 
 
 # ==========================================================
-# 下側：梁幅寸法
+# 下側：梁幅
 # ==========================================================
 
-BEAM_DIM_Y = BEAM_CHAIN_Y + 70
+BEAM_DIM_Y = BEAM_CHAIN_Y + 60
 
 svg += f"""
-<!-- 梁幅寸法線 -->
-
 <line
     x1="{BEAM_LEFT}"
     y1="{BEAM_DIM_Y}"
@@ -476,7 +473,7 @@ svg += f"""
 
 <text
     x="{(BEAM_LEFT + BEAM_RIGHT) / 2}"
-    y="{BEAM_DIM_Y + 30}"
+    y="{BEAM_DIM_Y + 25}"
     text-anchor="middle"
     font-size="20">
     {BEAM_WIDTH}
@@ -488,11 +485,11 @@ svg += f"""
 
 
 # ==========================================================
-# Streamlitに表示
+# 表示
 # ==========================================================
 
 components.html(
     svg,
-    height=1300,
+    height=1200,
     scrolling=False
 )
