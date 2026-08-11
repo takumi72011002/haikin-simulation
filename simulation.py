@@ -281,18 +281,18 @@ for x in COLUMN_BARS:
 svg += f"""
 <line
     x1="{BEAM_LEFT}"
-    y1="0"
+    y1="{TOP_BEAM_TOP}"
     x2="{BEAM_RIGHT}"
-    y2="0"
+    y2="{TOP_BEAM_TOP}"
     stroke="#eeeeee"
     stroke-width="8"
 />
 
 <line
     x1="{BEAM_LEFT}"
-    y1="{COLUMN_HEIGHT}"
+    y1="{BOTTOM_BEAM_BOTTOM}"
     x2="{BEAM_RIGHT}"
-    y2="{COLUMN_HEIGHT}"
+    y2="{BOTTOM_BEAM_BOTTOM}"
     stroke="#eeeeee"
     stroke-width="8"
 />
