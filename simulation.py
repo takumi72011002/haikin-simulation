@@ -79,7 +79,7 @@ BEAM_LENGTH_BOTTOM = 250
 
 # 梁幅750を柱1200の中央に配置
 
-BEAM_LEFT = (COLUMN_WIDTH - BEAM_WIDTH) / 2
+BEAM_LEFT = (COLUMN_WIDTH - BEAM_WIDTH) / 2-50
 BEAM_RIGHT = BEAM_LEFT + BEAM_WIDTH
 
 
@@ -273,6 +273,39 @@ for x in COLUMN_BARS:
         stroke-width="1"
     />
     """
+
+# ==========================================================
+# 梁と柱の境界線をグレーで消す
+# ==========================================================
+
+svg += f"""
+<line
+    x1="{BEAM_LEFT}"
+    y1="0"
+    x2="{BEAM_RIGHT}"
+    y2="0"
+    stroke="#eeeeee"
+    stroke-width="8"
+/>
+
+<line
+    x1="{BEAM_LEFT}"
+    y1="{COLUMN_HEIGHT}"
+    x2="{BEAM_RIGHT}"
+    y2="{COLUMN_HEIGHT}"
+    stroke="#eeeeee"
+    stroke-width="8"
+/>
+"""
+
+
+
+
+
+
+
+
+
 
 
 # ==========================================================
