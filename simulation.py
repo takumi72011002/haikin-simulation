@@ -154,6 +154,30 @@ svg = f"""
 />
 """
 
+# ==========================================================
+# 梁と柱の境界線をグレーで消す
+# ==========================================================
+
+svg += f"""
+<line
+    x1="{BEAM_LEFT}"
+    y1="{TOP_BEAM_TOP}"
+    x2="{BEAM_RIGHT}"
+    y2="{TOP_BEAM_TOP}"
+    stroke="#eeeeee"
+    stroke-width="8"
+/>
+
+<line
+    x1="{BEAM_LEFT}"
+    y1="{BOTTOM_BEAM_BOTTOM}"
+    x2="{BEAM_RIGHT}"
+    y2="{BOTTOM_BEAM_BOTTOM}"
+    stroke="#eeeeee"
+    stroke-width="8"
+/>
+"""
+
 
 # ==========================================================
 # 帯筋
@@ -274,29 +298,6 @@ for x in COLUMN_BARS:
     />
     """
 
-# ==========================================================
-# 梁と柱の境界線をグレーで消す
-# ==========================================================
-
-svg += f"""
-<line
-    x1="{BEAM_LEFT}"
-    y1="{TOP_BEAM_TOP}"
-    x2="{BEAM_RIGHT}"
-    y2="{TOP_BEAM_TOP}"
-    stroke="#eeeeee"
-    stroke-width="8"
-/>
-
-<line
-    x1="{BEAM_LEFT}"
-    y1="{BOTTOM_BEAM_BOTTOM}"
-    x2="{BEAM_RIGHT}"
-    y2="{BOTTOM_BEAM_BOTTOM}"
-    stroke="#eeeeee"
-    stroke-width="8"
-/>
-"""
 
 
 
