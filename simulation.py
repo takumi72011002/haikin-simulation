@@ -352,33 +352,90 @@ svg += f"""
 </text>
 """
 
-
 # ==========================================================
-# 上側：柱筋寸法
+# 上側：柱筋寸法チェーン
 # ==========================================================
 
-CHAIN_Y = -340
+# 寸法線のY位置
+COLUMN_CHAIN_Y = -340
+
+# ----------------------------------------------------------
+# 柱幅1200の寸法線
+# ----------------------------------------------------------
+
+COLUMN_WIDTH_DIM_Y = -410
+
+# 横方向の寸法線
+svg += f"""
+<line
+    x1="0"
+    y1="{COLUMN_WIDTH_DIM_Y}"
+    x2="{COLUMN_WIDTH}"
+    y2="{COLUMN_WIDTH_DIM_Y}"
+    stroke="black"
+    stroke-width="1"
+/>
+
+<!-- 左端の縦線 -->
+<line
+    x1="0"
+    y1="{COLUMN_WIDTH_DIM_Y}"
+    x2="0"
+    y2="{COLUMN_CHAIN_Y}"
+    stroke="black"
+    stroke-width="1"
+/>
+
+<!-- 右端の縦線 -->
+<line
+    x1="{COLUMN_WIDTH}"
+    y1="{COLUMN_WIDTH_DIM_Y}"
+    x2="{COLUMN_WIDTH}"
+    y2="{COLUMN_CHAIN_Y}"
+    stroke="black"
+    stroke-width="1"
+/>
+
+<!-- 1200 -->
+<text
+    x="{COLUMN_WIDTH / 2}"
+    y="{COLUMN_WIDTH_DIM_Y - 15}"
+    text-anchor="middle"
+    font-size="20">
+    {COLUMN_WIDTH}
+</text>
+"""
+
+
+# ----------------------------------------------------------
+# 柱筋の寸法チェーン
+# ----------------------------------------------------------
 
 previous = 0
 
+# 柱左端から順番に寸法を取る
 for x in COLUMN_BARS:
 
     distance = x - previous
     center = (previous + x) / 2
 
+    # 鉄筋位置の縦線
     svg += f"""
     <line
         x1="{x}"
-        y1="{CHAIN_Y}"
+        y1="{COLUMN_CHAIN_Y}"
         x2="{x}"
-        y2="-300"
+        y2="{COLUMN_CHAIN_Y + 40}"
         stroke="black"
         stroke-width="1"
     />
+    """
 
+    # 寸法値
+    svg += f"""
     <text
         x="{center}"
-        y="{CHAIN_Y - 12}"
+        y="{COLUMN_CHAIN_Y - 10}"
         text-anchor="middle"
         font-size="15">
         {distance}
@@ -388,43 +445,86 @@ for x in COLUMN_BARS:
     previous = x
 
 
-# 最後
+# ----------------------------------------------------------
+# 柱右端までの最後の寸法
+# ----------------------------------------------------------
 
 last = COLUMN_WIDTH - COLUMN_BARS[-1]
 
+center = (
+    COLUMN_BARS[-1] + COLUMN_WIDTH
+) / 2
+
+
 svg += f"""
+<!-- 最後の鉄筋位置 -->
 <line
     x1="{COLUMN_BARS[-1]}"
-    y1="{CHAIN_Y}"
+    y1="{COLUMN_CHAIN_Y}"
     x2="{COLUMN_BARS[-1]}"
-    y2="-300"
+    y2="{COLUMN_CHAIN_Y + 40}"
     stroke="black"
     stroke-width="1"
 />
 
+<!-- 柱右端 -->
+<line
+    x1="{COLUMN_WIDTH}"
+    y1="{COLUMN_CHAIN_Y}"
+    x2="{COLUMN_WIDTH}"
+    y2="{COLUMN_CHAIN_Y + 40}"
+    stroke="black"
+    stroke-width="1"
+/>
+
+<!-- 最後の寸法値 -->
 <text
-    x="{COLUMN_BARS[-1] + last / 2}"
-    y="{CHAIN_Y - 12}"
+    x="{center}"
+    y="{COLUMN_CHAIN_Y - 10}"
     text-anchor="middle"
     font-size="15">
     {last}
 </text>
 """
 
-
 # ==========================================================
-# 下側：梁筋寸法
+# 下側：梁筋寸法チェーン
 # ==========================================================
 
+# 寸法線のY位置
 BEAM_CHAIN_Y = BOTTOM_BEAM_BOTTOM + 70
 
-previous = 0
+
+# ----------------------------------------------------------
+# 梁左端からスタート
+# ----------------------------------------------------------
+
+previous = BEAM_LEFT
+
+
+# 梁左端の縦線
+svg += f"""
+<line
+    x1="{BEAM_LEFT}"
+    y1="{BOTTOM_BEAM_BOTTOM}"
+    x2="{BEAM_LEFT}"
+    y2="{BEAM_CHAIN_Y}"
+    stroke="black"
+    stroke-width="1"
+/>
+"""
+
+
+# ----------------------------------------------------------
+# 梁筋ごとの寸法
+# ----------------------------------------------------------
 
 for x in BEAM_BARS:
 
     distance = x - previous
     center = (previous + x) / 2
 
+    # 鉄筋位置の縦線
     svg += f"""
     <line
         x1="{x}"
@@ -434,7 +534,10 @@ for x in BEAM_BARS:
         stroke="black"
         stroke-width="1"
     />
+    """
 
+    # 寸法値
+    svg += f"""
     <text
         x="{center}"
         y="{BEAM_CHAIN_Y + 20}"
@@ -447,76 +550,37 @@ for x in BEAM_BARS:
     previous = x
 
 
-# 最後
+# ----------------------------------------------------------
+# 最後の梁筋 → 梁右端
+# ----------------------------------------------------------
 
-last = COLUMN_WIDTH - BEAM_BARS[-1]
+last = BEAM_RIGHT - BEAM_BARS[-1]
 
+center = (
+    BEAM_BARS[-1] + BEAM_RIGHT
+) / 2
+
+
+# 梁右端の縦線
 svg += f"""
 <line
-    x1="{BEAM_BARS[-1]}"
+    x1="{BEAM_RIGHT}"
     y1="{BOTTOM_BEAM_BOTTOM}"
-    x2="{BEAM_BARS[-1]}"
+    x2="{BEAM_RIGHT}"
     y2="{BEAM_CHAIN_Y}"
     stroke="black"
     stroke-width="1"
 />
 
+<!-- 最後の寸法値 -->
 <text
-    x="{BEAM_BARS[-1] + last / 2}"
+    x="{center}"
     y="{BEAM_CHAIN_Y + 20}"
     text-anchor="middle"
     font-size="15">
     {last}
 </text>
 """
-
-
-# ==========================================================
-# 下側：梁幅
-# ==========================================================
-
-BEAM_DIM_Y = BEAM_CHAIN_Y + 60
-
-svg += f"""
-<line
-    x1="{BEAM_LEFT}"
-    y1="{BEAM_DIM_Y}"
-    x2="{BEAM_RIGHT}"
-    y2="{BEAM_DIM_Y}"
-    stroke="black"
-    stroke-width="1"
-/>
-
-<line
-    x1="{BEAM_LEFT}"
-    y1="{BOTTOM_BEAM_BOTTOM}"
-    x2="{BEAM_LEFT}"
-    y2="{BEAM_DIM_Y}"
-    stroke="black"
-    stroke-width="1"
-/>
-
-<line
-    x1="{BEAM_RIGHT}"
-    y1="{BOTTOM_BEAM_BOTTOM}"
-    x2="{BEAM_RIGHT}"
-    y2="{BEAM_DIM_Y}"
-    stroke="black"
-    stroke-width="1"
-/>
-
-<text
-    x="{(BEAM_LEFT + BEAM_RIGHT) / 2}"
-    y="{BEAM_DIM_Y + 25}"
-    text-anchor="middle"
-    font-size="20">
-    {BEAM_WIDTH}
-</text>
-
-
-</svg>
-"""
-
 
 # ==========================================================
 # 表示
