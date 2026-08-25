@@ -164,27 +164,32 @@ svg += f"""
 # ==========================================================
 # 帯筋
 # ==========================================================
-#
-# 正方形の柱の中に配置
-#
-# ==========================================================
 
-TIE_LEFT = (85 - COLUMN_BAR_D*0.5)
-TIE_RIGHT = COLUMN_WIDTH - (85 - COLUMN_BAR_D*0.5)
+TIE_LEFT = 85 - COLUMN_BAR_D * 0.5
+TIE_RIGHT = COLUMN_WIDTH - (85 - COLUMN_BAR_D * 0.5)
 
-TIE_TOP = (85 - COLUMN_BAR_D*0.5)
-TIE_BOTTOM = COLUMN_HEIGHT -(85 + COLUMN_BAR_D*0.5)
+TIE_TOP = 85 - COLUMN_BAR_D * 0.5
+TIE_BOTTOM = COLUMN_HEIGHT - (85 + COLUMN_BAR_D * 0.5)
+
+# 帯筋の曲げ半径
+TIE_RADIUS = TIE_BAR_D * 2
 
 svg += f"""
-<rect
-    x="{TIE_LEFT}"
-    y="{TIE_TOP}"
-    width="{TIE_RIGHT - TIE_LEFT}"
-    height="{TIE_BOTTOM - TIE_TOP}"
+<path
+    d="
+        M {TIE_LEFT + TIE_RADIUS} {TIE_TOP}
+        H {TIE_RIGHT - TIE_RADIUS}
+        A {TIE_RADIUS} {TIE_RADIUS} 0 0 1 {TIE_RIGHT} {TIE_TOP + TIE_RADIUS}
+        V {TIE_BOTTOM - TIE_RADIUS}
+        A {TIE_RADIUS} {TIE_RADIUS} 0 0 1 {TIE_RIGHT - TIE_RADIUS} {TIE_BOTTOM}
+        H {TIE_LEFT + TIE_RADIUS}
+        A {TIE_RADIUS} {TIE_RADIUS} 0 0 1 {TIE_LEFT} {TIE_BOTTOM - TIE_RADIUS}
+        V {TIE_TOP + TIE_RADIUS}
+        A {TIE_RADIUS} {TIE_RADIUS} 0 0 1 {TIE_LEFT + TIE_RADIUS} {TIE_TOP}
+    "
     fill="none"
     stroke="#333333"
     stroke-width="{TIE_BAR_D}"
-    rx="{TIE_BAR_D*1.5+TIE_BAR_D*0.5}"
 />
 """
 
