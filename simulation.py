@@ -169,11 +169,11 @@ svg += f"""
 #
 # ==========================================================
 
-TIE_LEFT = 70
-TIE_RIGHT = COLUMN_WIDTH - 70
+TIE_LEFT = 85
+TIE_RIGHT = COLUMN_WIDTH - 85
 
-TIE_TOP = 70
-TIE_BOTTOM = COLUMN_HEIGHT - 70
+TIE_TOP = 85
+TIE_BOTTOM = COLUMN_HEIGHT - 85
 
 svg += f"""
 <rect
@@ -184,7 +184,7 @@ svg += f"""
     fill="none"
     stroke="#333333"
     stroke-width="{TIE_BAR_D}"
-    rx="10"
+    rx="{TIE_BAR_D}*1.5+{TIE_BAR_D}*0.5"
 />
 """
 
