@@ -271,48 +271,6 @@ for x in COLUMN_BARS:
 
 
 
-# ==========================================================
-# 上側：柱幅
-# ==========================================================
-
-COLUMN_DIM_Y = -410
-
-svg += f"""
-<line
-    x1="0"
-    y1="{COLUMN_DIM_Y}"
-    x2="{COLUMN_WIDTH}"
-    y2="{COLUMN_DIM_Y}"
-    stroke="black"
-    stroke-width="1"
-/>
-
-<line
-    x1="0"
-    y1="{COLUMN_DIM_Y}"
-    x2="0"
-    y2="-340"
-    stroke="black"
-    stroke-width="1"
-/>
-
-<line
-    x1="{COLUMN_WIDTH}"
-    y1="{COLUMN_DIM_Y}"
-    x2="{COLUMN_WIDTH}"
-    y2="-340"
-    stroke="black"
-    stroke-width="1"
-/>
-
-<text
-    x="{COLUMN_WIDTH / 2}"
-    y="{COLUMN_DIM_Y - 15}"
-    text-anchor="middle"
-    font-size="20">
-    {COLUMN_WIDTH}
-</text>
-"""
 
 
 
