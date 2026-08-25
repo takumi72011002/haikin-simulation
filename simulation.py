@@ -169,10 +169,10 @@ svg += f"""
 #
 # ==========================================================
 
-TIE_LEFT = (85 + {COLUMN_BAR_D}*0.5)
+TIE_LEFT = 85 + {COLUMN_BAR_D}*0.5
 TIE_RIGHT = COLUMN_WIDTH - (85 + {COLUMN_BAR_D}*0.5)
 
-TIE_TOP = (85 + {COLUMN_BAR_D}*0.5)
+TIE_TOP = 85 + {COLUMN_BAR_D}*0.5
 TIE_BOTTOM = COLUMN_HEIGHT -(85 + {COLUMN_BAR_D}*0.5)
 
 svg += f"""
