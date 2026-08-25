@@ -184,7 +184,7 @@ svg += f"""
     fill="none"
     stroke="#333333"
     stroke-width="{TIE_BAR_D}"
-    rx="TIE_BAR_D*1.5+TIE_BAR_D*0.5"
+    rx="{TIE_BAR_D*1.5+TIE_BAR_D*0.5}"
 />
 """
 
