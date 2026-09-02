@@ -412,7 +412,7 @@ svg += draw_dimension(
 # 下側：梁筋の寸法
 # ==========================================================
 
-BEAM_DIM_Y = COLUMN_HEIGHT + 180
+BEAM_DIM_Y = BOTTOM_BEAM_BOTTOM + 60
 
 # 梁端 + 梁筋位置 + 梁端
 BEAM_DIM_POINTS = [BEAM_LEFT] + BEAM_BARS + [BEAM_RIGHT]
@@ -452,7 +452,7 @@ for i in range(len(BEAM_DIM_POINTS) - 1):
 #       225 | 750 | 225 のような寸法線
 # ==========================================================
 
-BEAM_TOTAL_DIM_Y = COLUMN_HEIGHT + 320
+BEAM_TOTAL_DIM_Y = BOTTOM_BEAM_BOTTOM + 180
 
 # 柱左端
 svg += f"""
