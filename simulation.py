@@ -275,7 +275,256 @@ for x in COLUMN_BARS:
 
 
 
+# ==========================================================
+# 寸法線
+# ==========================================================
 
+DIM_COLOR = "#ff0000"
+DIM_STROKE = 2
+DIM_FONT_SIZE = 24
+ARROW_SIZE = 8
+
+
+# ----------------------------------------------------------
+# 寸法線を描く関数
+# ----------------------------------------------------------
+
+def draw_dimension(x1, x2, y, value):
+
+    svg = f"""
+    <!-- 寸法線 -->
+    <line
+        x1="{x1}"
+        y1="{y}"
+        x2="{x2}"
+        y2="{y}"
+        stroke="{DIM_COLOR}"
+        stroke-width="{DIM_STROKE}"
+    />
+
+    <!-- 左矢印 -->
+    <path
+        d="M {x1} {y}
+           L {x1 + ARROW_SIZE} {y - ARROW_SIZE / 2}
+           L {x1 + ARROW_SIZE} {y + ARROW_SIZE / 2}
+           Z"
+        fill="{DIM_COLOR}"
+    />
+
+    <!-- 右矢印 -->
+    <path
+        d="M {x2} {y}
+           L {x2 - ARROW_SIZE} {y - ARROW_SIZE / 2}
+           L {x2 - ARROW_SIZE} {y + ARROW_SIZE / 2}
+           Z"
+        fill="{DIM_COLOR}"
+    />
+
+    <!-- 寸法値 -->
+    <text
+        x="{(x1 + x2) / 2}"
+        y="{y - 12}"
+        text-anchor="middle"
+        font-size="{DIM_FONT_SIZE}"
+        fill="black"
+    >
+        {value:.0f}
+    </text>
+    """
+
+    return svg
+
+
+# ==========================================================
+# 上側：柱筋の寸法
+# ==========================================================
+
+COLUMN_DIM_Y = -100
+
+# 柱端 + 柱筋位置 + 柱端
+COLUMN_DIM_POINTS = [0] + COLUMN_BARS + [COLUMN_WIDTH]
+
+# 寸法補助線
+for x in COLUMN_DIM_POINTS:
+
+    svg += f"""
+    <line
+        x1="{x}"
+        y1="{COLUMN_BAR_Y_TOP}"
+        x2="{x}"
+        y2="{COLUMN_DIM_Y + 10}"
+        stroke="{DIM_COLOR}"
+        stroke-width="{DIM_STROKE}"
+    />
+    """
+
+# 各区間の寸法
+for i in range(len(COLUMN_DIM_POINTS) - 1):
+
+    x1 = COLUMN_DIM_POINTS[i]
+    x2 = COLUMN_DIM_POINTS[i + 1]
+
+    value = x2 - x1
+
+    svg += draw_dimension(
+        x1,
+        x2,
+        COLUMN_DIM_Y,
+        value
+    )
+
+
+# ----------------------------------------------------------
+# 柱全幅 1200
+# ----------------------------------------------------------
+
+COLUMN_TOTAL_DIM_Y = -190
+
+svg += f"""
+<line
+    x1="0"
+    y1="{COLUMN_DIM_Y - 10}"
+    x2="0"
+    y2="{COLUMN_TOTAL_DIM_Y + 10}"
+    stroke="{DIM_COLOR}"
+    stroke-width="{DIM_STROKE}"
+/>
+
+<line
+    x1="{COLUMN_WIDTH}"
+    y1="{COLUMN_DIM_Y - 10}"
+    x2="{COLUMN_WIDTH}"
+    y2="{COLUMN_TOTAL_DIM_Y + 10}"
+    stroke="{DIM_COLOR}"
+    stroke-width="{DIM_STROKE}"
+/>
+"""
+
+svg += draw_dimension(
+    0,
+    COLUMN_WIDTH,
+    COLUMN_TOTAL_DIM_Y,
+    COLUMN_WIDTH
+)
+
+
+# ==========================================================
+# 下側：梁筋の寸法
+# ==========================================================
+
+BEAM_DIM_Y = COLUMN_HEIGHT + 150
+
+# 梁端 + 梁筋位置 + 梁端
+BEAM_DIM_POINTS = [BEAM_LEFT] + BEAM_BARS + [BEAM_RIGHT]
+
+# 寸法補助線
+for x in BEAM_DIM_POINTS:
+
+    svg += f"""
+    <line
+        x1="{x}"
+        y1="{BOTTOM_BEAM_BOTTOM}"
+        x2="{x}"
+        y2="{BEAM_DIM_Y + 10}"
+        stroke="{DIM_COLOR}"
+        stroke-width="{DIM_STROKE}"
+    />
+    """
+
+# 各区間の寸法
+for i in range(len(BEAM_DIM_POINTS) - 1):
+
+    x1 = BEAM_DIM_POINTS[i]
+    x2 = BEAM_DIM_POINTS[i + 1]
+
+    value = x2 - x1
+
+    svg += draw_dimension(
+        x1,
+        x2,
+        BEAM_DIM_Y,
+        value
+    )
+
+
+# ==========================================================
+# 下側：柱端～梁端～梁端～柱端
+#       225 | 750 | 225 のような寸法線
+# ==========================================================
+
+BEAM_TOTAL_DIM_Y = COLUMN_HEIGHT + 280
+
+# 柱左端
+svg += f"""
+<line
+    x1="0"
+    y1="{COLUMN_HEIGHT}"
+    x2="0"
+    y2="{BEAM_TOTAL_DIM_Y + 10}"
+    stroke="{DIM_COLOR}"
+    stroke-width="{DIM_STROKE}"
+/>
+"""
+
+# 梁左端
+svg += f"""
+<line
+    x1="{BEAM_LEFT}"
+    y1="{BOTTOM_BEAM_BOTTOM}"
+    x2="{BEAM_LEFT}"
+    y2="{BEAM_TOTAL_DIM_Y + 10}"
+    stroke="{DIM_COLOR}"
+    stroke-width="{DIM_STROKE}"
+/>
+"""
+
+# 梁右端
+svg += f"""
+<line
+    x1="{BEAM_RIGHT}"
+    y1="{BOTTOM_BEAM_BOTTOM}"
+    x2="{BEAM_RIGHT}"
+    y2="{BEAM_TOTAL_DIM_Y + 10}"
+    stroke="{DIM_COLOR}"
+    stroke-width="{DIM_STROKE}"
+/>
+"""
+
+# 柱右端
+svg += f"""
+<line
+    x1="{COLUMN_WIDTH}"
+    y1="{COLUMN_HEIGHT}"
+    x2="{COLUMN_WIDTH}"
+    y2="{BEAM_TOTAL_DIM_Y + 10}"
+    stroke="{DIM_COLOR}"
+    stroke-width="{DIM_STROKE}"
+/>
+"""
+
+# 左側：柱端 → 梁端
+svg += draw_dimension(
+    0,
+    BEAM_LEFT,
+    BEAM_TOTAL_DIM_Y,
+    BEAM_LEFT
+)
+
+# 中央：梁幅
+svg += draw_dimension(
+    BEAM_LEFT,
+    BEAM_RIGHT,
+    BEAM_TOTAL_DIM_Y,
+    BEAM_WIDTH
+)
+
+# 右側：梁端 → 柱端
+svg += draw_dimension(
+    BEAM_RIGHT,
+    COLUMN_WIDTH,
+    BEAM_TOTAL_DIM_Y,
+    COLUMN_WIDTH - BEAM_RIGHT
+)
 
 
 # ==========================================================
