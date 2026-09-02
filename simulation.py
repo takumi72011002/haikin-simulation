@@ -345,7 +345,7 @@ COLUMN_DIM_Y = -330
 COLUMN_DIM_POINTS = [0] + COLUMN_BARS + [COLUMN_WIDTH]
 
 # 寸法補助線
-for x in COLUMN_DIM_POINTS:
+for x in COLUMN_DIM_POINTS[1:-1]:
 
     svg += f"""
     <line
@@ -422,7 +422,7 @@ BEAM_DIM_Y = BOTTOM_BEAM_BOTTOM + 60
 BEAM_DIM_POINTS = [BEAM_LEFT] + BEAM_BARS + [BEAM_RIGHT]
 
 # 寸法補助線
-for x in COLUMN_DIM_POINTS[1:-1]:
+for x in BEAM_DIM_POINTS:
 
     svg += f"""
     <line
