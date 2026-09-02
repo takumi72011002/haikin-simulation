@@ -352,7 +352,7 @@ for x in COLUMN_DIM_POINTS[1:-1]:
         x1="{x}"
         y1="{COLUMN_BAR_Y_TOP}"
         x2="{x}"
-        y2="{COLUMN_DIM_Y + 10}"
+        y2="{COLUMN_DIM_Y - 10}"
         stroke="{DIM_COLOR}"
         stroke-width="{DIM_STROKE}"
     />
