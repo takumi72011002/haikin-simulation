@@ -100,7 +100,10 @@ svg = f"""
 <svg
     xmlns="http://www.w3.org/2000/svg"
     width="100%"
+    height="100%"
     viewBox="-150 -500 1500 2200"
+    preserveAspectRatio="xMidYMid meet"
+    style="max-width:100%; max-height:100%;"
 >
 
 
@@ -289,7 +292,18 @@ svg += """
 # ==========================================================
 
 components.html(
-    svg,
-    height=1200,
+    f"""
+    <div style="
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    ">
+        {svg}
+    </div>
+    """,
+    height=800,
     scrolling=False
 )
