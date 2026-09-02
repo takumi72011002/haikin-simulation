@@ -429,7 +429,7 @@ for x in COLUMN_DIM_POINTS[1:-1]:
         x1="{x}"
         y1="{BOTTOM_BEAM_BOTTOM}"
         x2="{x}"
-        y2="{BEAM_DIM_Y - 10}"
+        y2="{BEAM_DIM_Y + 10}"
         stroke="{DIM_COLOR}"
         stroke-width="{DIM_STROKE}"
     />
