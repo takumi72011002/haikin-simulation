@@ -378,21 +378,25 @@ for i in range(len(COLUMN_DIM_POINTS) - 1):
 # 柱全幅 1200
 # ----------------------------------------------------------
 
-COLUMN_TOTAL_DIM_Y = -420
+COLUMN_TOTAL_DIM_Y = -190
 
+# 左端：縦の補助線を1本にする
 svg += f"""
 <line
     x1="0"
-    y1="{COLUMN_DIM_Y - 10}"
+    y1="{COLUMN_BAR_Y_TOP}"
     x2="0"
     y2="{COLUMN_TOTAL_DIM_Y + 10}"
     stroke="{DIM_COLOR}"
     stroke-width="{DIM_STROKE}"
 />
+"""
 
+# 右端：縦の補助線を1本にする
+svg += f"""
 <line
     x1="{COLUMN_WIDTH}"
-    y1="{COLUMN_DIM_Y - 10}"
+    y1="{COLUMN_BAR_Y_TOP}"
     x2="{COLUMN_WIDTH}"
     y2="{COLUMN_TOTAL_DIM_Y + 10}"
     stroke="{DIM_COLOR}"
@@ -418,7 +422,7 @@ BEAM_DIM_Y = BOTTOM_BEAM_BOTTOM + 60
 BEAM_DIM_POINTS = [BEAM_LEFT] + BEAM_BARS + [BEAM_RIGHT]
 
 # 寸法補助線
-for x in BEAM_DIM_POINTS:
+for x in COLUMN_DIM_POINTS[1:-1]:
 
     svg += f"""
     <line
