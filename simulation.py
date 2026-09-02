@@ -378,7 +378,7 @@ for i in range(len(COLUMN_DIM_POINTS) - 1):
 # 柱全幅 1200
 # ----------------------------------------------------------
 
-COLUMN_TOTAL_DIM_Y = -190
+COLUMN_TOTAL_DIM_Y = -320
 
 # 左端：縦の補助線を1本にする
 svg += f"""
